@@ -1,0 +1,123 @@
+basePath: /api
+definitions:
+  domain.Merchant:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      merchant_category_code:
+        type: string
+      merchant_city:
+        type: string
+      merchant_code:
+        type: integer
+      merchant_name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact:
+    name: API Support
+  description: System to Merchant and Team account.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Merchant account management
+  version: "1.0"
+paths:
+  /v1/merchant:
+    post:
+      consumes:
+      - application/json
+      description: Update a merchant.
+      parameters:
+      - description: Merchant Code
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: update a merchant
+      tags:
+      - Merchant
+  /v1/merchant/:
+    get:
+      consumes:
+      - application/json
+      description: Gets all Merchant.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Merchant'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: gets all Merchants
+      tags:
+      - Merchant
+  /v1/merchant/{code}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a merchant.
+      parameters:
+      - description: Code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: remove a merchant
+      tags:
+      - Merchant
+  /v1/merchants/{code}/{name}:
+    put:
+      consumes:
+      - application/json
+      description: Update a merchant.
+      parameters:
+      - description: Code
+        in: path
+        name: code
+        required: true
+        type: string
+      - description: Name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: update a merchant
+      tags:
+      - Merchant
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
