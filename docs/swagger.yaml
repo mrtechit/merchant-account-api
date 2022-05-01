@@ -1,4 +1,4 @@
-basePath: /api
+basePath: /api/v1
 definitions:
   domain.Merchant:
     properties:
@@ -17,10 +17,27 @@ definitions:
       updated_at:
         type: string
     type: object
+  domain.TeamMember:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      merchant:
+        $ref: '#/definitions/domain.Merchant'
+      merchant_name:
+        type: string
+      merchantMerchantCode:
+        type: integer
+      updated_at:
+        type: string
+    type: object
 info:
   contact:
     name: API Support
-  description: System to Merchant and Team account.
+  description: System to manage Merchant and Team Member accounts.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -28,15 +45,109 @@ info:
   title: Merchant account management
   version: "1.0"
 paths:
-  /v1/merchant:
+  /api/v1/merchant:
     post:
       consumes:
       - application/json
-      description: Update a merchant.
+      description: Updates a merchant
+      parameters:
+      - description: Merchant code
+        in: body
+        name: merchant_code
+        required: true
+        schema:
+          type: string
+      - description: Merchant name
+        in: body
+        name: merchant_name
+        required: true
+        schema:
+          type: string
+      - description: Merchant email
+        in: body
+        name: merchant_email
+        required: true
+        schema:
+          type: string
+      - description: Merchant city
+        in: body
+        name: merchant_city
+        required: true
+        schema:
+          type: string
+      - description: Merchant category code
+        in: body
+        name: merchant_category_code
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+        "500":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Updates a merchant
+      tags:
+      - Merchant
+  /api/v1/merchant/:
+    put:
+      consumes:
+      - application/json
+      description: Create a merchant
+      parameters:
+      - description: Merchant name
+        in: body
+        name: merchant_name
+        required: true
+        schema:
+          type: string
+      - description: Merchant email
+        in: body
+        name: merchant_email
+        required: true
+        schema:
+          type: string
+      - description: Merchant city
+        in: body
+        name: merchant_city
+        required: true
+        schema:
+          type: string
+      - description: Merchant category code
+        in: body
+        name: merchant_category_code
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+        "401":
+          description: ""
+        "500":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Creates a merchant
+      tags:
+      - Merchant
+  /api/v1/merchant/{merchant_code}:
+    delete:
+      consumes:
+      - application/json
+      description: Removes a merchant.
       parameters:
       - description: Merchant Code
         in: path
-        name: name
+        name: merchant_code
         required: true
         type: string
       produces:
@@ -44,16 +155,189 @@ paths:
       responses:
         "200":
           description: ""
+        "401":
+          description: ""
+        "500":
+          description: ""
       security:
       - ApiKeyAuth: []
-      summary: update a merchant
+      summary: Removes a merchant
       tags:
       - Merchant
-  /v1/merchant/:
     get:
       consumes:
       - application/json
-      description: Gets all Merchant.
+      description: Gets details of a merchant (name, city, email, mcc)
+      parameters:
+      - description: Merchant Code
+        in: path
+        name: merchant_code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Merchant'
+        "401":
+          description: ""
+        "500":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Gets details of a merchant
+      tags:
+      - Merchant
+  /api/v1/teams:
+    post:
+      consumes:
+      - application/json
+      description: Updates a team member
+      parameters:
+      - description: Team member id
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Team member name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: Team member email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+        "500":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: updates a team member
+      tags:
+      - Team members
+  /api/v1/teams/:
+    put:
+      consumes:
+      - application/json
+      description: Creates a team member
+      parameters:
+      - description: Team member name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: Team member email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Merchant code for this member
+        in: body
+        name: merchant_code
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+        "500":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: creates a team member
+      tags:
+      - Team members
+  /api/v1/teams/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a team member.
+      parameters:
+      - description: Team member id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: ""
+        "500":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: remove a team member
+      tags:
+      - Team members
+    get:
+      consumes:
+      - application/json
+      description: Gets details of a team member
+      parameters:
+      - description: team member
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.TeamMember'
+        "401":
+          description: ""
+        "500":
+          description: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Gets details of a team member
+      tags:
+      - Team Members
+  /api/v1/teams/{merchant_code}/{page}/{page_size}:
+    get:
+      consumes:
+      - application/json
+      description: Gets all team members for a particular merchant
+      parameters:
+      - description: Merchant code
+        in: path
+        name: merchant_code
+        required: true
+        type: string
+      - description: Page
+        in: path
+        name: page
+        required: true
+        type: string
+      - description: Page Size
+        in: path
+        name: page_size
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -61,60 +345,34 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.Merchant'
+              $ref: '#/definitions/domain.TeamMember'
             type: array
+        "401":
+          description: ""
+        "500":
+          description: ""
       security:
       - ApiKeyAuth: []
-      summary: gets all Merchants
+      summary: gets all team members for a particular merchant
       tags:
-      - Merchant
-  /v1/merchant/{code}:
-    delete:
+      - Team members
+  /api/v1/token/new:
+    get:
       consumes:
       - application/json
-      description: Remove a merchant.
-      parameters:
-      - description: Code
-        in: path
-        name: code
-        required: true
-        type: string
+      description: Create a new access token.
       produces:
       - application/json
       responses:
         "200":
+          description: ok
+          schema:
+            type: string
+        "500":
           description: ""
-      security:
-      - ApiKeyAuth: []
-      summary: remove a merchant
+      summary: create a new access token
       tags:
-      - Merchant
-  /v1/merchants/{code}/{name}:
-    put:
-      consumes:
-      - application/json
-      description: Update a merchant.
-      parameters:
-      - description: Code
-        in: path
-        name: code
-        required: true
-        type: string
-      - description: Name
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: ""
-      security:
-      - ApiKeyAuth: []
-      summary: update a merchant
-      tags:
-      - Merchant
+      - Token
 securityDefinitions:
   ApiKeyAuth:
     in: header
